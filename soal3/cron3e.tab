@@ -1,2 +1,5 @@
+# Zip saat kuliah
 0 7 * * 1-5 bash ~/soal-shift-sisop-modul-1-F06-2021/soal3/soal3d.sh
+
+# Unzip saat tidak kuliah
 0 18 * * 1-5 bash ~/soal-shift-sisop-modul-1-F06-2021/soal3/soal3e.sh

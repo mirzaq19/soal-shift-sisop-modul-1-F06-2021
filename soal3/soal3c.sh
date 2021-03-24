@@ -68,7 +68,7 @@ do
     fi
 done
 
-# Done
+# Done download
 echo "Sudah terdownload semua"
 
 # Bikin folder, lalu dipindah ke folder itu
@@ -76,5 +76,5 @@ mkdir "$nama_folder"
 mv ./Koleksi_* "./$nama_folder/"
 mv ./Foto.log "./$nama_folder/"
 
-# Sudah
+# Sudah dipindahkan
 echo "Moved to $nama_folder"

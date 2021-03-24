@@ -5,7 +5,7 @@ BASEDIR=$(dirname "$0")
 echo "Masuk ke $BASEDIR"
 cd "$BASEDIR"
 
-# Eksekusi yang 3a
+# Eksekusi yang 3a (Demi efisiensi, karena memang itu yang dieksekusi)
 bash ./soal3a.sh
 
 # Bikin folder, lalu dipindah ke folder itu
