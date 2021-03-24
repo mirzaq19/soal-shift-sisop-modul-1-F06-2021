@@ -10,9 +10,9 @@ get_file_name_result=""
 get_file_name() {
     if [ $1 -lt 10 ]
     then
-        get_file_name_result="Koleksi_0$1.jpg"
+        get_file_name_result="Koleksi_0$1"
     else
-        get_file_name_result="Koleksi_$1.jpg"
+        get_file_name_result="Koleksi_$1"
     fi
 }
 
