@@ -18,11 +18,13 @@ awk 'BEGIN { FS = "\t" ;}
 }
 #Nomer 2b
 /2017/ {
-  samename = 0;
-  for(itr = 0; itr < jml2017 ; itr++){
-    if(custname[itr] == $7) samename = 1;
+  if($10 == "Albuquerque"){
+    samename = 0;
+    for(itr = 0; itr < jml2017 ; itr++){
+      if(custname[itr] == $7) samename = 1;
+    }
+    if(samename == 0) custname[jml2017++] = $7;
   }
-  if(samename == 0) custname[jml2017++] = $7;
 }
 #Nomer 2c
 /Home Office/ { homof++ }
