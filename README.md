@@ -353,9 +353,10 @@ get_file_name() {
     fi
 }
 
-# Iterasi sampai 23
+# Iterasi sampai maks 23
+maks_iterasi=23
 file_ke=1
-while [ "$file_ke" -le 23 ]
+while [ "$file_ke" -le "$maks_iterasi" ]
 do
     # Tentukan filename dulu
     get_file_name "$file_ke"
@@ -378,7 +379,8 @@ do
     # Lakukan sesuai soal :v
     if [ $is_same -eq 1 ]
     then
-        echo "$filename: Hasil download sama, hapus dan ulang."
+        echo "$filename: Hasil download sama, hapus."
+        maks_iterasi=$(($maks_iterasi - 1))
         rm "./$filename"
     else
         echo "$filename: Hasil download berbeda, lanjut."
@@ -415,8 +417,10 @@ get_file_name() {
 Fungsi `get_file_name()` digunakan untuk menentukan nama berkas dari angka iterasi yang dimasukkan berdasarkan digit dari angkanya. Apabila 1 digit, maka berkas akan bernama "Koleksi_0X", sedangkan "Koleksi_XX" untuk 2 digit. Nama berkas tersebut akan dimasukkan ke variabel `get_file_name_result` agar dapat digunakan selama jalannya *script*.
 
 ```bash
+# Iterasi sampai maks 23
+maks_iterasi=23
 file_ke=1
-while [ "$file_ke" -le 23 ]
+while [ "$file_ke" -le "$maks_iterasi" ]
 do
     # Blok kode yang akan dijelaskan selanjutnya
 done
@@ -458,7 +462,8 @@ Blok loop ini akan memeriksa link download yang telah disimpan pada array dengan
 ```bash
 if [ $is_same -eq 1 ]
 then
-    echo "$filename: Hasil download sama, hapus dan ulang."
+    echo "$filename: Hasil download sama, hapus."
+    maks_iterasi=$(($maks_iterasi - 1))
     rm "./$filename"
 else
     echo "$filename: Hasil download berbeda, lanjut."
@@ -466,7 +471,7 @@ else
 fi
 ```
 
-Blok kode ini bertujuan membaca variabel `is_same` sebelumnya, apabila bernilai 1 yang bermakna ada berkas sama yang sebelumnya telah didownload, maka hapus berkas yang baru didownload dengan `rm "./$filename"`. Sebaliknya, variabel iterasi `file_ke` ditambahkan 1 yang berarti lanjut ke koleksi nomor berikutnya.
+Blok kode ini bertujuan membaca variabel `is_same` sebelumnya, apabila bernilai 1 yang bermakna ada berkas sama yang sebelumnya telah didownload, maka hapus berkas yang baru didownload dengan `rm "./$filename"` dan kurangi batas maksimal  looping yaitu `maks_iterasi`. Sebaliknya, variabel iterasi `file_ke` ditambahkan 1 yang berarti lanjut ke koleksi nomor berikutnya.
 
 ### **Jawaban No. 3b (bash)**
 
@@ -563,9 +568,10 @@ else
     nama_folder="Kucing_$current_date"
 fi
 
-# Iterasi sampai 23
+# Iterasi sampai maks 23
+maks_iterasi=23
 file_ke=1
-while [ "$file_ke" -le 23 ]
+while [ "$file_ke" -le "$maks_iterasi" ]
 do
 
     # Tentukan filename dulu
@@ -589,7 +595,8 @@ do
     # Lakukan sesuai soal :v
     if [ $is_same -eq 1 ]
     then
-        echo "$filename: Hasil download sama, hapus dan ulang."
+        echo "$filename: Hasil download sama, hapus."
+        maks_iterasi=$(($maks_iterasi - 1))
         rm "./$filename"
     else
         echo "$filename: Hasil download berbeda, lanjut."

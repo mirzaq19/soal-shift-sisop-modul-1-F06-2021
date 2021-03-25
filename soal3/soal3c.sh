@@ -32,9 +32,10 @@ else
     nama_folder="Kucing_$current_date"
 fi
 
-# Iterasi sampai 23
+# Iterasi sampai maks 23
+maks_iterasi=23
 file_ke=1
-while [ "$file_ke" -le 23 ]
+while [ "$file_ke" -le "$maks_iterasi" ]
 do
 
     # Tentukan filename dulu
@@ -58,7 +59,8 @@ do
     # Lakukan sesuai soal :v
     if [ $is_same -eq 1 ]
     then
-        echo "$filename: Hasil download sama, hapus dan ulang."
+        echo "$filename: Hasil download sama, hapus."
+        maks_iterasi=$(($maks_iterasi - 1))
         rm "./$filename"
     else
         echo "$filename: Hasil download berbeda, lanjut."
