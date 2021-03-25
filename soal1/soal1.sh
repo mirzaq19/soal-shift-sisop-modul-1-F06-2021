@@ -9,7 +9,7 @@ regex2="(?<=ERROR |INFO ).+(?= \()"
 #User
 regex3="(?<=\()\w+\.?\w+"
 #Combined
-regex4="(ERROR|INFO).+(?= \() |(?<=\()\w+\.?\w+)"
+regex4="(ERROR|INFO).+(?= \() |(?<=\()\w+\.?\w+"
 
 #soal 1B
 #semua msg Error (Error tidak masuk) sampai bertemu ' ('
