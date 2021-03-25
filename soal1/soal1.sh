@@ -5,7 +5,7 @@
 #Error/Info
 regex1="(ERROR|INFO)"
 #Log message
-regex2="(?<=ERROR |=INFO ).+(?= \()"
+regex2="(?<=ERROR |INFO ).+(?= \()"
 #User
 regex3="(?<=\()\w+\.?\w+"
 #Combined
