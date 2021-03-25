@@ -7,4 +7,4 @@ hariini=$(date +"%d%m%Y")
 unzip -P "$hariini" Koleksi.zip
 
 # Hapus file zip
-rm *.zip
+rm ./Koleksi.zip

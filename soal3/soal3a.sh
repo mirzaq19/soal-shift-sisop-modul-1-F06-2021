@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Masuk ke folder repo dulu
+BASEDIR=$(dirname "$0")
+echo "Masuk ke $BASEDIR"
+cd "$BASEDIR"
+
 # Menentukan nama file
 get_file_name_result=""
 get_file_name() {
