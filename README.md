@@ -108,8 +108,8 @@ Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhak
 **e.** Karena kuuhaku hanya bertemu Steven pada saat kuliah saja, yaitu setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore, ia memintamu untuk membuat koleksinya **ter-zip** saat kuliah saja, selain dari waktu yang disebutkan, ia ingin koleksinya **ter-unzip** dan **tidak ada file zip** sama sekali.
 
 **Catatan** :
-Gunakan bash, AWK, dan command pendukung
-Tuliskan semua cron yang kalian pakai ke file cron3[b/e].tab yang sesuai
+- Gunakan bash, AWK, dan command pendukung
+- Tuliskan semua cron yang kalian pakai ke file cron3[b/e].tab yang sesuai
 
 ### **Jawaban No. 3a**
 
@@ -320,9 +320,9 @@ get_file_name_result=""
 get_file_name() {
     if [ $1 -lt 10 ]
     then
-        get_file_name_result="Koleksi_0$1.jpg"
+        get_file_name_result="Koleksi_0$1"
     else
-        get_file_name_result="Koleksi_$1.jpg"
+        get_file_name_result="Koleksi_$1"
     fi
 }
 
