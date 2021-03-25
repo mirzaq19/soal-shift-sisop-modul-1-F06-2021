@@ -27,13 +27,11 @@ do
 
     # Cari, ada yang sama atau tidak
     is_same=0
-    for((i=1; i < $file_ke; i++))
+    awk_link_array=($(awk '/https:\/\/loremflickr.com\/cache\/resized\// {print $3}' ./Foto.log))
+    awk_array_length=(${#awk_link_array[@]})
+    for((i=0; i < ($awk_array_length - 1); i++))
     do
-        get_file_name "$i"
-        cmp_filename=$get_file_name_result
-        cmp_result=$(cmp "./$cmp_filename" "./$filename")
-        cmp_exit=$?
-        if [ $cmp_exit -eq 0 ]
+        if [ "${awk_link_array[i]}" == "${awk_link_array[$(($awk_array_length - 1))]}" ]
         then
             is_same=1
             break

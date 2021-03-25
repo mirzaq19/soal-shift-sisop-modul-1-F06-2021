@@ -143,13 +143,11 @@ do
 
     # Cari, ada yang sama atau tidak
     is_same=0
-    for((i=1; i < $file_ke; i++))
+    awk_link_array=($(awk '/https:\/\/loremflickr.com\/cache\/resized\// {print $3}' ./Foto.log))
+    awk_array_length=(${#awk_link_array[@]})
+    for((i=0; i < ($awk_array_length - 1); i++))
     do
-        get_file_name "$i"
-        cmp_filename=$get_file_name_result
-        cmp_result=$(cmp "./$cmp_filename" "./$filename")
-        cmp_exit=$?
-        if [ $cmp_exit -eq 0 ]
+        if [ "${awk_link_array[i]}" == "${awk_link_array[$(($awk_array_length - 1))]}" ]
         then
             is_same=1
             break
@@ -179,7 +177,7 @@ echo "Masuk ke $BASEDIR"
 cd "$BASEDIR"
 ```
 
-Kode ini berfungsi untuk mencari path dari file script ini lalu berpindah ke directory itu. Hal ini bertujuan agar script tidak mendownload file di directory yang tidak diharapkan.
+Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* tidak mendownload file di directory yang tidak diharapkan.
 
 ```bash
 get_file_name_result=""
@@ -217,13 +215,16 @@ Potongan kode ini bertujuan untuk memanggil fungsi `get_file_name()` dengan para
 
 ```bash
 is_same=0
-for((i=1; i < $file_ke; i++))
+awk_link_array=($(awk '/https:\/\/loremflickr.com\/cache\/resized\// {print $3}' ./Foto.log))
+awk_array_length=(${#awk_link_array[@]})
+```
+
+Blok ini bertujuan untuk memeriksa link download berkas menggunakan awk dengan regex `/https:\/\/loremflickr.com\/cache\/resized\//` lalu print `$3`-nya dan memasukkan hasil awk-nya ke array `awk_link_array`. Setelah itu, ambil panjang array tersebut dan masukkan ke variabel `awk_array_length`.
+
+```bash
+for((i=0; i < ($awk_array_length - 1); i++))
 do
-    get_file_name "$i"
-    cmp_filename=$get_file_name_result
-    cmp_result=$(cmp "./$cmp_filename" "./$filename")
-    cmp_exit=$?
-    if [ $cmp_exit -eq 0 ]
+    if [ "${awk_link_array[i]}" == "${awk_link_array[$(($awk_array_length - 1))]}" ]
     then
         is_same=1
         break
@@ -231,7 +232,7 @@ do
 done
 ```
 
-Blok loop ini bertujuan untuk memeriksa berkas "Koleksi_01" hingga "Koleksi_(`file_ke - 1`)" dengan berkas yang baru didownload menggunakan cmp. cmp akan menghasilkan exit status 0 apabila berkas sama, maka blok `if` bertujuan untuk mengisi variabel `is_same` dengan 1 yang menandakan true, lalu hentikan blok `for` karena sudah terdeteksi kesamaan berkas.
+Blok loop ini akan memeriksa link download yang telah disimpan pada array dengan membandingkan link download terbaru dengan seluruh isi array hingga indeks tepat sebelumnya. Apabila ada link yang sama, maka blok `if` bertujuan untuk mengisi variabel `is_same` dengan 1 yang menandakan true, lalu hentikan blok `for` karena sudah terdeteksi kesamaan berkas.
 
 ```bash
 if [ $is_same -eq 1 ]
@@ -277,7 +278,7 @@ echo "Masuk ke $BASEDIR"
 cd "$BASEDIR"
 ```
 
-Kode ini berfungsi untuk mencari path dari berkas script ini lalu berpindah ke directory itu. Hal ini bertujuan agar crontab tidak mendownload berkas di directory yang tidak diharapkan.
+Kode ini berfungsi untuk mencari path dari berkas *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar crontab tidak mendownload berkas di directory yang tidak diharapkan.
 
 ```bash
 bash ./soal3a.sh
@@ -302,7 +303,7 @@ Potongan kode ini bertujuan mengambil informasi tanggal hari ini dengan format "
 
 ### **Penjelasan No. 3b (crontab)**
 
-Script cron di atas bertujuan untuk mengeksekusi script `soal3b.sh` **sehari sekali pada jam 8 malam** untuk tanggal-tanggal tertentu setiap bulan, yaitu dari **tanggal 1 tujuh hari sekali** (1,8,...), serta dari **tanggal 2 empat hari sekali** (2,6,...).
+*Script* cron di atas bertujuan untuk mengeksekusi *script* `soal3b.sh` **sehari sekali pada jam 8 malam** untuk tanggal-tanggal tertentu setiap bulan, yaitu dari **tanggal 1 tujuh hari sekali** (1,8,...), serta dari **tanggal 2 empat hari sekali** (2,6,...).
 
 ### **Jawaban No. 3c**
 
@@ -319,9 +320,9 @@ get_file_name_result=""
 get_file_name() {
     if [ $1 -lt 10 ]
     then
-        get_file_name_result="Koleksi_0$1"
+        get_file_name_result="Koleksi_0$1.jpg"
     else
-        get_file_name_result="Koleksi_$1"
+        get_file_name_result="Koleksi_$1.jpg"
     fi
 }
 
@@ -353,13 +354,11 @@ do
 
     # Cari, ada yang sama atau tidak
     is_same=0
-    for((i=1; i < $file_ke; i++))
+    awk_link_array=($(awk '/https:\/\/loremflickr.com\/cache\/resized\// {print $3}' ./Foto.log))
+    awk_array_length=(${#awk_link_array[@]})
+    for((i=0; i < ($awk_array_length - 1); i++))
     do
-        get_file_name "$i"
-        cmp_filename=$get_file_name_result
-        cmp_result=$(cmp "./$cmp_filename" "./$filename")
-        cmp_exit=$?
-        if [ $cmp_exit -eq 0 ]
+        if [ "${awk_link_array[i]}" == "${awk_link_array[$(($awk_array_length - 1))]}" ]
         then
             is_same=1
             break
@@ -391,7 +390,7 @@ echo "Moved to $nama_folder"
 
 ### **Penjelasan No. 3c**
 
-Sebetulnya script pada **3c** ini mirip dengan **3a**, oleh karena itu disini akan dijelaskan perubahannya saja.
+Sebetulnya *script* pada **3c** ini mirip dengan **3a**, oleh karena itu disini akan dijelaskan perubahannya saja.
 
 ```bash
 kemarin=$(date -d yesterday +"%d-%m-%Y")
@@ -436,6 +435,11 @@ Potongan kode ini akan membuat folder baru dengan nama sesuai variabel `nama_fol
 ```bash
 #!/bin/bash
 
+# Masuk ke folder repo dulu
+BASEDIR=$(dirname "$0")
+echo "Masuk ke $BASEDIR"
+cd "$BASEDIR"
+
 # Ambil tanggal hari ini
 hariini=$(date +"%d%m%Y")
 
@@ -444,6 +448,14 @@ zip -rem Koleksi.zip Kucing_* Kelinci_* -P "$hariini"
 ```
 
 ### **Penjelasan No. 3d**
+
+```bash
+BASEDIR=$(dirname "$0")
+echo "Masuk ke $BASEDIR"
+cd "$BASEDIR"
+```
+
+Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* melakukan zip file pada directory yang sama dengan *script*-nya.
 
 ```bash
 hariini=$(date +"%d%m%Y")
@@ -462,6 +474,11 @@ Potongan kode ini akan memasukkan semua folder kucing maupun kelinci ke dalam zi
 ```bash
 #!/bin/bash
 
+# Masuk ke folder repo dulu
+BASEDIR=$(dirname "$0")
+echo "Masuk ke $BASEDIR"
+cd "$BASEDIR"
+
 # Ambil tanggal hari ini
 hariini=$(date +"%d%m%Y")
 
@@ -473,6 +490,14 @@ rm ./Koleksi.zip
 ```
 
 ### **Penjelasan No. 3e**
+
+```bash
+BASEDIR=$(dirname "$0")
+echo "Masuk ke $BASEDIR"
+cd "$BASEDIR"
+```
+
+Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* melakukan unzip file pada directory yang sama dengan *script*-nya.
 
 ```bash
 hariini=$(date +"%d%m%Y")
@@ -494,5 +519,5 @@ Potongan kode ini akan menghaous arsip "Koleksi.zip".
 
 ### **Catatan tambahan untuk No. 3**
 
-- Semua perintah `echo` bertujuan untuk memberikan *feedback* ke pengguna mengenai apa yang sedang terjadi pada script sehingga script tidak menampilkan output yang kurang *user-friendly*.
+- Semua perintah `echo` bertujuan untuk memberikan *feedback* ke pengguna mengenai apa yang sedang terjadi pada *script* sehingga *script* tidak menampilkan output yang kurang *user-friendly*.
 - Newline yang ada pada akhir file crontab tidak terbaca pada github.
