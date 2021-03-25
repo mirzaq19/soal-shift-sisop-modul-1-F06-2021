@@ -494,4 +494,5 @@ Potongan kode ini akan menghaous arsip "Koleksi.zip".
 
 ### **Catatan tambahan untuk No. 3**
 
-Semua perintah `echo` bertujuan untuk memberikan *feedback* ke pengguna mengenai apa yang sedang terjadi pada script sehingga script tidak menampilkan output yang kurang *user-friendly*.
+- Semua perintah `echo` bertujuan untuk memberikan *feedback* ke pengguna mengenai apa yang sedang terjadi pada script sehingga script tidak menampilkan output yang kurang *user-friendly*.
+- Newline yang ada pada akhir file crontab tidak terbaca pada github.
