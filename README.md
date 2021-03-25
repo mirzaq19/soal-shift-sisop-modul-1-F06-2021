@@ -93,6 +93,227 @@ Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedi
 
 ### **Jawaban No. 2**
 
+Untuk menyelesaikan masalah yang ada pada nomer 2 di atas akan menggunakan program `AWK`. Langkah pertamanya adalah menentukan file separator (pemisah antar data) yang digunakan pada file yang berisi data yang akan diproses menggunakan awk.
+
+```bash
+BEGIN { FS = "\t" ;}
+```
+Kode di atas digunakan untuk mendefinisikan file separator, dengan memasukkan file separator yang digunakan ke dalam variabel `FS`.
+
+### **Penjelasan Soal No. 2a**
+
+Pada nomor 2a diminta untuk mencari dan menampilkan `ID Transaksi` dan `Profit Percentage terbesar` dalam data yang ada di file laporan. 
+
+```bash
+#Nomer 2a 
+{ temppp = ($21/($18-$21))*100;
+  if(maxpp<temppp) {
+    maxpp = temppp;
+    maxid = $2;
+    maxrow = $1;
+  }
+  if(maxpp == temppp) {
+    if(maxrow<$1) { 
+      maxrow = $1;
+      maxid = $2;
+    }
+  }
+}
+```
+
+Kode di atas digunakan untuk mencari `Profit Percentage` tiap baris nya dan menyimpan data dengan nilai terbesar. Variabel `Temppp` digunakan untuk mencari nilai `Profit Percentage` pada tiap baris datanya. Lalu di bawahnya akan ada percabangan yang akan menentukan nilai terbesarnya dan jika nilai terbesarnya sama maka akan mengambil nilai dari `Row ID` terbesar. Lalu kode di bawah ini untuk menampilkan hasilnya.
+
+```bash
+#Soal 2a
+printf("Transaksi terakhir dengan profit percentage terbesar yaitu %s dengan persentase %.2f%%\n\n",maxid,maxpp);
+```
+
+### **Penjelasan Soal No. 2b**
+
+Pada soal nomor 2b diminta untuk mencari dan menampilkan daftar `Customer` yang melakukan transaksi di `Albuquerque`.
+
+```bash
+#Nomer 2b
+/2017/ {
+  if($10 == "Albuquerque"){
+    samename = 0;
+    for(itr = 0; itr < jml2017 ; itr++){
+      if(custname[itr] == $7) samename = 1;
+    }
+    if(samename == 0) custname[jml2017++] = $7;
+  }
+}
+```
+Untuk mencarinya bisa dimulai dengan mengecek tahun order nya apakah sama dengan `2017` kebetulan di `Order ID` nya terdapat tahun ordernya jadi memudahkan untuk mengecek waktu transaksinya, kemudian mengecek apakah tempat transaksi tersebut berada di `Albuquerque` pada variable `$10`. Jika ditemukan maka akan masuk ke pengecekan apakah nama customer nya sudah masuk dalam daftar. Jika nama `Customer` belum masuk maka akan dimasukkan ke dalam array yang menampung daftar namanya. Lalu untuk menampilkannya dengan menggunakan kode dibawah ini.
+
+```bash
+#Soal 2b
+printf("Daftar nama customer di Albuquerque pada tahun 2017 antara lain: \n");
+for(itr = 0 ; itr < jml2017; itr++) printf("%s\n",custname[itr]);
+printf("\n");
+```
+
+### **Penjelasan Soal No. 2c**
+
+Pada soal nomor 2c diminta untuk mencari dan menampilkan `Segment Customer` dengan jumlah transaksi paling sedikit.
+
+```bash
+#Nomer 2c
+/Home Office/ { homof++ }
+/Corporate/ { corp++ }
+/Consumer/ { consu++ }
+```
+
+Kode di atas digunakan untuk menghitung data yang termasuk pada salah satu dari ketiga segment customer yang ada, yaitu `Home Office`, `Corporate`, dan `Costumer`. Lalu untuk menampilkannya dengan menggunakan kode berikut ini.
+
+```bash
+#Soal 2c
+if(homof < corp){
+  if(homof < consu) { minseg = "Home Office"; mintotseg = homof; }
+  else {minseg = "Customer"; mintotseg = consu; }
+}
+else{
+  if(corp < consu) { minseg = "Corporate"; mintotseg = corp; }
+  else {minseg = "Customer"; mintotseg = consu; }
+}
+printf("Tipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n",minseg,mintotseg);
+```
+
+Sebelum ditampilkan akan masuk dalam percabangan untuk menentukan segment customer yang memiliki jumlah transaksi paling sedikit.
+
+### **Penjelasan Soal No. 2d**
+
+Pada soal nomor 2d diminta untuk mencari dan menampilkan `Region` (Wilayah) dengan total `Profit` (Keuntungan) paling sedikit.
+
+```bash
+#Nomer 2d
+/Central/ { central += $21 }
+/East/ { east += $21 }
+/South/ { south += $21 }
+/West/ { west += $21 }
+```
+
+Kode di atas digunakan untuk mencari total `Profit` pada setiap Region, caranya dengan menjumlahkan profit yang ada di variable `$21` ke dalam setiap variable penampungnya. Lalu akan ditampilkan dengan kode berikut ini.
+
+```bash
+#Soal 2d  
+if(central < east){
+  if(central < south){
+    if(central < west){ minregion = "Central"; minprofregion = central; }
+    else { minregion = "West"; minprofregion = west; }
+  }
+  else {
+    if(south < west) { minregion = "South"; minprofregion = south; }
+    else { minregion = "West"; minprofregion = west; }
+  }
+}
+else {
+  if(east < south) {
+    if(east < west) { minregion = "East"; minprofregion = east; }
+    else { minregion = "West"; minprofregion = west; }
+  }
+  else {
+    if(south < west) { minregion = "South"; minprofregion = south; }
+    else { minregion = "West"; minprofregion = west; }
+  }
+}
+printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %f\n",minregion,minprofregion);
+```
+
+Sebelum ditampilkan akan masuk dalam percabangan untuk menentukan Region mana yang memiliki Profit paling sedikit.
+
+
+### **Penjelasan Soal No. 2e**
+
+Soal nomor 2e merupakan script yang akan di jalankan untuk menyelesaikan problem yang ada pada soal 2a-2d dengan menggunakan kode berikut. 
+
+```bash
+#!/bin/bash
+
+# Soal 2
+awk 'BEGIN { FS = "\t" ;}
+#Nomer 2a 
+{ temppp = ($21/($18-$21))*100;
+  if(maxpp<temppp) {
+    maxpp = temppp;
+    maxid = $2;
+    maxrow = $1;
+  }
+  if(maxpp == temppp) {
+    if(maxrow<$1) { 
+      maxrow = $1;
+      maxid = $2;
+    }
+  }
+}
+#Nomer 2b
+/2017/ {
+  if($10 == "Albuquerque"){
+    samename = 0;
+    for(itr = 0; itr < jml2017 ; itr++){
+      if(custname[itr] == $7) samename = 1;
+    }
+    if(samename == 0) custname[jml2017++] = $7;
+  }
+}
+#Nomer 2c
+/Home Office/ { homof++ }
+/Corporate/ { corp++ }
+/Consumer/ { consu++ }
+#Nomer 2d
+/Central/ { central += $21 }
+/East/ { east += $21 }
+/South/ { south += $21 }
+/West/ { west += $21 }
+END { 
+#Soal 2a
+   printf("Transaksi terakhir dengan profit percentage terbesar yaitu %s dengan persentase %.2f%%\n\n",maxid,maxpp);
+#Soal 2b
+   printf("Daftar nama customer di Albuquerque pada tahun 2017 antara lain: \n");
+  for(itr = 0 ; itr < jml2017; itr++) printf("%s\n",custname[itr]);
+  printf("\n");
+#Soal 2c
+  if(homof < corp){
+    if(homof < consu) { minseg = "Home Office"; mintotseg = homof; }
+    else {minseg = "Customer"; mintotseg = consu; }
+  }
+  else{
+    if(corp < consu) { minseg = "Corporate"; mintotseg = corp; }
+    else {minseg = "Customer"; mintotseg = consu; }
+  }
+  printf("Tipe segmen customer yang penjualannya paling sedikit adalah %s dengan %d transaksi.\n",minseg,mintotseg);
+#Soal 2d  
+  if(central < east){
+    if(central < south){
+      if(central < west){ minregion = "Central"; minprofregion = central; }
+      else { minregion = "West"; minprofregion = west; }
+    }
+    else {
+      if(south < west) { minregion = "South"; minprofregion = south; }
+      else { minregion = "West"; minprofregion = west; }
+    }
+  }
+  else {
+    if(east < south) {
+      if(east < west) { minregion = "East"; minprofregion = east; }
+      else { minregion = "West"; minprofregion = west; }
+    }
+    else {
+      if(south < west) { minregion = "South"; minprofregion = south; }
+      else { minregion = "West"; minprofregion = west; }
+    }
+  }
+  printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedikit adalah %s dengan total keuntungan %f\n",minregion,minprofregion);
+}
+' Laporan-TokoShiSop.tsv > hasil.txt
+```
+
+Kode di atas akan dijalankan dengan menggunakan perintah bash pada terminal dan akan menghasilnya file `hasil.txt` yang merupakan solusi dari soal 2a-2d. Perintahnya adalah sebagai berikut.
+
+```bash
+bash soal2_generate_laporan_ihir_shisop.sh
+```
+
 ### **Soal No. 3**
 
 Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhaku juga merupakan seorang yang pemalas sehingga ia tidak ingin repot-repot mencari foto, selain itu ia juga seorang pemalu, sehingga ia tidak ingin ada orang yang melihat koleksinya tersebut, sayangnya ia memiliki teman bernama Steven yang memiliki rasa kepo yang luar biasa. Kuuhaku pun memiliki ide agar Steven tidak bisa melihat koleksinya, serta untuk mempermudah hidupnya, yaitu dengan meminta bantuan kalian. Idenya adalah :
@@ -108,8 +329,8 @@ Kuuhaku adalah orang yang sangat suka mengoleksi foto-foto digital, namun Kuuhak
 **e.** Karena kuuhaku hanya bertemu Steven pada saat kuliah saja, yaitu setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore, ia memintamu untuk membuat koleksinya **ter-zip** saat kuliah saja, selain dari waktu yang disebutkan, ia ingin koleksinya **ter-unzip** dan **tidak ada file zip** sama sekali.
 
 **Catatan** :
-- Gunakan bash, AWK, dan command pendukung
-- Tuliskan semua cron yang kalian pakai ke file cron3[b/e].tab yang sesuai
+Gunakan bash, AWK, dan command pendukung
+Tuliskan semua cron yang kalian pakai ke file cron3[b/e].tab yang sesuai
 
 ### **Jawaban No. 3a**
 
@@ -143,11 +364,13 @@ do
 
     # Cari, ada yang sama atau tidak
     is_same=0
-    awk_link_array=($(awk '/https:\/\/loremflickr.com\/cache\/resized\// {print $3}' ./Foto.log))
-    awk_array_length=(${#awk_link_array[@]})
-    for((i=0; i < ($awk_array_length - 1); i++))
+    for((i=1; i < $file_ke; i++))
     do
-        if [ "${awk_link_array[i]}" == "${awk_link_array[$(($awk_array_length - 1))]}" ]
+        get_file_name "$i"
+        cmp_filename=$get_file_name_result
+        cmp_result=$(cmp "./$cmp_filename" "./$filename")
+        cmp_exit=$?
+        if [ $cmp_exit -eq 0 ]
         then
             is_same=1
             break
@@ -177,7 +400,7 @@ echo "Masuk ke $BASEDIR"
 cd "$BASEDIR"
 ```
 
-Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* tidak mendownload file di directory yang tidak diharapkan.
+Kode ini berfungsi untuk mencari path dari file script ini lalu berpindah ke directory itu. Hal ini bertujuan agar script tidak mendownload file di directory yang tidak diharapkan.
 
 ```bash
 get_file_name_result=""
@@ -215,16 +438,13 @@ Potongan kode ini bertujuan untuk memanggil fungsi `get_file_name()` dengan para
 
 ```bash
 is_same=0
-awk_link_array=($(awk '/https:\/\/loremflickr.com\/cache\/resized\// {print $3}' ./Foto.log))
-awk_array_length=(${#awk_link_array[@]})
-```
-
-Blok ini bertujuan untuk memeriksa link download berkas menggunakan awk dengan regex `/https:\/\/loremflickr.com\/cache\/resized\//` lalu print `$3`-nya dan memasukkan hasil awk-nya ke array `awk_link_array`. Setelah itu, ambil panjang array tersebut dan masukkan ke variabel `awk_array_length`.
-
-```bash
-for((i=0; i < ($awk_array_length - 1); i++))
+for((i=1; i < $file_ke; i++))
 do
-    if [ "${awk_link_array[i]}" == "${awk_link_array[$(($awk_array_length - 1))]}" ]
+    get_file_name "$i"
+    cmp_filename=$get_file_name_result
+    cmp_result=$(cmp "./$cmp_filename" "./$filename")
+    cmp_exit=$?
+    if [ $cmp_exit -eq 0 ]
     then
         is_same=1
         break
@@ -232,7 +452,7 @@ do
 done
 ```
 
-Blok loop ini akan memeriksa link download yang telah disimpan pada array dengan membandingkan link download terbaru dengan seluruh isi array hingga indeks tepat sebelumnya. Apabila ada link yang sama, maka blok `if` bertujuan untuk mengisi variabel `is_same` dengan 1 yang menandakan true, lalu hentikan blok `for` karena sudah terdeteksi kesamaan berkas.
+Blok loop ini bertujuan untuk memeriksa berkas "Koleksi_01" hingga "Koleksi_(`file_ke - 1`)" dengan berkas yang baru didownload menggunakan cmp. cmp akan menghasilkan exit status 0 apabila berkas sama, maka blok `if` bertujuan untuk mengisi variabel `is_same` dengan 1 yang menandakan true, lalu hentikan blok `for` karena sudah terdeteksi kesamaan berkas.
 
 ```bash
 if [ $is_same -eq 1 ]
@@ -278,7 +498,7 @@ echo "Masuk ke $BASEDIR"
 cd "$BASEDIR"
 ```
 
-Kode ini berfungsi untuk mencari path dari berkas *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar crontab tidak mendownload berkas di directory yang tidak diharapkan.
+Kode ini berfungsi untuk mencari path dari berkas script ini lalu berpindah ke directory itu. Hal ini bertujuan agar crontab tidak mendownload berkas di directory yang tidak diharapkan.
 
 ```bash
 bash ./soal3a.sh
@@ -303,7 +523,7 @@ Potongan kode ini bertujuan mengambil informasi tanggal hari ini dengan format "
 
 ### **Penjelasan No. 3b (crontab)**
 
-*Script* cron di atas bertujuan untuk mengeksekusi *script* `soal3b.sh` **sehari sekali pada jam 8 malam** untuk tanggal-tanggal tertentu setiap bulan, yaitu dari **tanggal 1 tujuh hari sekali** (1,8,...), serta dari **tanggal 2 empat hari sekali** (2,6,...).
+Script cron di atas bertujuan untuk mengeksekusi script `soal3b.sh` **sehari sekali pada jam 8 malam** untuk tanggal-tanggal tertentu setiap bulan, yaitu dari **tanggal 1 tujuh hari sekali** (1,8,...), serta dari **tanggal 2 empat hari sekali** (2,6,...).
 
 ### **Jawaban No. 3c**
 
@@ -354,11 +574,13 @@ do
 
     # Cari, ada yang sama atau tidak
     is_same=0
-    awk_link_array=($(awk '/https:\/\/loremflickr.com\/cache\/resized\// {print $3}' ./Foto.log))
-    awk_array_length=(${#awk_link_array[@]})
-    for((i=0; i < ($awk_array_length - 1); i++))
+    for((i=1; i < $file_ke; i++))
     do
-        if [ "${awk_link_array[i]}" == "${awk_link_array[$(($awk_array_length - 1))]}" ]
+        get_file_name "$i"
+        cmp_filename=$get_file_name_result
+        cmp_result=$(cmp "./$cmp_filename" "./$filename")
+        cmp_exit=$?
+        if [ $cmp_exit -eq 0 ]
         then
             is_same=1
             break
@@ -390,7 +612,7 @@ echo "Moved to $nama_folder"
 
 ### **Penjelasan No. 3c**
 
-Sebetulnya *script* pada **3c** ini mirip dengan **3a**, oleh karena itu disini akan dijelaskan perubahannya saja.
+Sebetulnya script pada **3c** ini mirip dengan **3a**, oleh karena itu disini akan dijelaskan perubahannya saja.
 
 ```bash
 kemarin=$(date -d yesterday +"%d-%m-%Y")
@@ -435,11 +657,6 @@ Potongan kode ini akan membuat folder baru dengan nama sesuai variabel `nama_fol
 ```bash
 #!/bin/bash
 
-# Masuk ke folder repo dulu
-BASEDIR=$(dirname "$0")
-echo "Masuk ke $BASEDIR"
-cd "$BASEDIR"
-
 # Ambil tanggal hari ini
 hariini=$(date +"%d%m%Y")
 
@@ -448,14 +665,6 @@ zip -rem Koleksi.zip Kucing_* Kelinci_* -P "$hariini"
 ```
 
 ### **Penjelasan No. 3d**
-
-```bash
-BASEDIR=$(dirname "$0")
-echo "Masuk ke $BASEDIR"
-cd "$BASEDIR"
-```
-
-Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* melakukan zip file pada directory yang sama dengan *script*-nya.
 
 ```bash
 hariini=$(date +"%d%m%Y")
@@ -474,11 +683,6 @@ Potongan kode ini akan memasukkan semua folder kucing maupun kelinci ke dalam zi
 ```bash
 #!/bin/bash
 
-# Masuk ke folder repo dulu
-BASEDIR=$(dirname "$0")
-echo "Masuk ke $BASEDIR"
-cd "$BASEDIR"
-
 # Ambil tanggal hari ini
 hariini=$(date +"%d%m%Y")
 
@@ -490,14 +694,6 @@ rm ./Koleksi.zip
 ```
 
 ### **Penjelasan No. 3e**
-
-```bash
-BASEDIR=$(dirname "$0")
-echo "Masuk ke $BASEDIR"
-cd "$BASEDIR"
-```
-
-Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* melakukan unzip file pada directory yang sama dengan *script*-nya.
 
 ```bash
 hariini=$(date +"%d%m%Y")
@@ -519,5 +715,5 @@ Potongan kode ini akan menghaous arsip "Koleksi.zip".
 
 ### **Catatan tambahan untuk No. 3**
 
-- Semua perintah `echo` bertujuan untuk memberikan *feedback* ke pengguna mengenai apa yang sedang terjadi pada *script* sehingga *script* tidak menampilkan output yang kurang *user-friendly*.
+- Semua perintah `echo` bertujuan untuk memberikan *feedback* ke pengguna mengenai apa yang sedang terjadi pada script sehingga script tidak menampilkan output yang kurang *user-friendly*.
 - Newline yang ada pada akhir file crontab tidak terbaca pada github.
