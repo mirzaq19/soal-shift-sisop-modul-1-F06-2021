@@ -2,12 +2,18 @@
 # while loops
  
 #soal 1A
-#dengan limit 'ticky: ' sampai setelahnya 
-grep -oP '(?<=ticky: ).+' syslog.log
- 
+#Error/Info
+regex1="(ERROR|INFO)"
+#Log message
+regex2="(?<=ERROR |?<=INFO ).+(?= )"
+#User
+regex3="(?<=\()\w+\.?\w+"
+#Combined
+regex4="(ERROR|INFO).+(?= \() |(?<=\()\w+\.?\w+)"
+
 #soal 1B
-#semua msg Error sampai akhir line
-grep -oP 'ERROR .+' syslog.log
+#semua msg Error (Error tidak masuk) sampai bertemu ' ('
+grep -oP '(?<=ERROR ).+(?= \()' syslog.log
 #Menghitung Error msg dan dimasukkin var
 E=$(grep -c 'ERROR' syslog.log)
 echo "Jumlah ERROR: ${E}"
