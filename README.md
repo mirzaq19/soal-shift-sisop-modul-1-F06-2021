@@ -46,8 +46,73 @@ ryujin.1203,1,3
 
 - **Tidak boleh** menggunakan AWK
 
-### **Jawaban No. 1**
+### **Jawaban No. 1a**
 
+```bash
+#!/bin/bash
+# while loops
+ 
+#soal 1A
+#Error/Info
+regex1="(ERROR|INFO)"
+#Log message
+regex2="(?<=ERROR |?<=INFO ).+(?= \()"
+#User
+regex3="(?<=\()\w+\.?\w+"
+#Combined
+regex4="(ERROR|INFO).+(?= \() |(?<=\()\w+\.?\w+)"
+```
+### **Penjelasan No. 1A**
+
+Pada No.1a diminta untuk membuat regex yang dapat menampilkan jenis log (`ERROR/INFO`), pesan log, dan username pada setiap baris lognya.
+
+```
+#Error/Info
+regex1="(ERROR|INFO)"
+```
+Regex `(ERROR|INFO)` mencari setiap baris yang memiliki kata (`ERROR/INFO`)
+```
+#Log message
+regex2="(?<=ERROR |INFO ).+(?= \()"
+```
+Regex `(?<=ERROR |INFO )` mencari setiap baris yang memiliki kata dari (`ERROR |INFO `) dan `?<=` sebagai *PositiveLookahead* atau melihat kedepan dari kata tersebut. Regex `.+` menerima semua character sampai akhir line. Regex `(?= \()` untuk stop `.+` sampai bertemu ` (`.
+```
+#User
+regex3="(?<=\()\w+\.?\w+"
+```
+Regex `(?<=\()` mencari setiap baris yang memiliki symbol `(` kemudian seperti sebelumnya `?<=` sebagai *PositiveLookahead* atau melihat kedepan dari kata tersebut. Regex `\w+` mencari satu kata dan `\.?` mencari titik jika ada ditambah, jika tidak ada juga boleh.
+```
+#Combined
+regex4="(ERROR|INFO).+(?= \() |(?<=\()\w+\.?\w+)"
+```
+Setelah itu dijadikan satu, karena kata `(ERROR|INFO)` masuk maka tidak diperlukan `(?<=ERROR |INFO )`.
+
+### **Jawaban No. 1B**
+
+```bash
+#soal 1B
+#semua msg Error (Error tidak masuk) sampai bertemu ' ('
+grep -oP '(?<=ERROR ).+(?= \()' syslog.log
+#Menghitung Error msg dan dimasukkin var
+E=$(grep -c 'ERROR' syslog.log)
+echo "Jumlah ERROR: ${E}"
+```
+### **Penjelasan No. 1B**
+
+Pada soal 1B diminta menampilkan semua pesan error yang muncul beserta jumlah kemunculannya.
+```
+#semua msg Error (Error tidak masuk) sampai bertemu ' ('
+grep -oP '(?<=ERROR ).+(?= \()' syslog.log
+```
+Kode `grep -oP` berarti mengambil cuman kata yang dicari dalam baris dengan menggunakan syntax Perl regexp. Regex `(?<=ERROR ).+(?= \()` sama seperti regex2 akan tetapi hanya kata ERROR.
+```
+#Menghitung Error msg dan dimasukkin var
+E=$(grep -c 'ERROR' syslog.log)
+echo "Jumlah ERROR: ${E}"
+```
+Kode `grep -c 'ERROR'` menghitung berapa banyak muncul kata ERROR. Kode `E=$()` agar dapat memasuki grep dalam variable yang pada kode `echo "Jumlah ERROR: ${E}"` dilakukan output.
+
+### **Jawaban No. 1C**
 ### **Soal No. 2**
 
 Steven dan Manis mendirikan sebuah *startup* bernama “TokoShiSop”. Sedangkan kamu dan Clemong adalah karyawan pertama dari TokoShiSop. Setelah tiga tahun bekerja, Clemong diangkat menjadi manajer penjualan TokoShiSop, sedangkan kamu menjadi kepala gudang yang mengatur keluar masuknya barang.
