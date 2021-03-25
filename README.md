@@ -449,7 +449,7 @@ zip -rem Koleksi.zip Kucing_* Kelinci_* -P "$hariini"
 hariini=$(date +"%d%m%Y")
 ```
 
-Potongan kode ini mengambil informasi tanggal hari ini dengan format "DD-MM-YYYY" dan menyimpannya ke variabel `hariini`.
+Potongan kode ini mengambil informasi tanggal hari ini dengan format "DDMMYYYY" dan menyimpannya ke variabel `hariini`.
 
 ```bash
 zip -rem Koleksi.zip Kucing_* Kelinci_* -P "$hariini"
@@ -478,7 +478,7 @@ rm ./Koleksi.zip
 hariini=$(date +"%d%m%Y")
 ```
 
-Potongan kode ini mengambil informasi tanggal hari ini dengan format "DD-MM-YYYY" dan menyimpannya ke variabel `hariini`.
+Potongan kode ini mengambil informasi tanggal hari ini dengan format "DDMMYYYY" dan menyimpannya ke variabel `hariini`.
 
 ```bash
 unzip -P "$hariini" Koleksi.zip
