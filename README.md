@@ -92,25 +92,17 @@ Setelah itu dijadikan satu, karena kata `(ERROR|INFO)` masuk maka tidak diperluk
 ```bash
 #soal 1B
 #semua msg Error (Error tidak masuk) sampai bertemu ' ('
-grep -oP '(?<=ERROR ).+(?= \()' syslog.log
-#Menghitung Error msg dan dimasukkin var
-E=$(grep -c 'ERROR' syslog.log)
-echo "Jumlah ERROR: ${E}"
+grep -oP '(?<=ERROR ).+(?= \()' syslog.log | sort | uniq -c
 ```
 ### **Penjelasan No. 1B**
 
 Pada soal 1B diminta menampilkan semua pesan error yang muncul beserta jumlah kemunculannya.
 ```
 #semua msg Error (Error tidak masuk) sampai bertemu ' ('
-grep -oP '(?<=ERROR ).+(?= \()' syslog.log
+grep -oP '(?<=ERROR ).+(?= \()' syslog.log | sort | uniq -c
 ```
-Kode `grep -oP` berarti mengambil cuman kata yang dicari dalam baris dengan menggunakan syntax Perl regexp. Regex `(?<=ERROR ).+(?= \()` sama seperti regex2 akan tetapi hanya kata ERROR.
-```
-#Menghitung Error msg dan dimasukkin var
-E=$(grep -c 'ERROR' syslog.log)
-echo "Jumlah ERROR: ${E}"
-```
-Kode `grep -c 'ERROR'` menghitung berapa banyak muncul kata ERROR. Kode `E=$()` agar dapat memasuki grep dalam variable yang pada kode `echo "Jumlah ERROR: ${E}"` dilakukan output.
+Kode `grep -oP` berarti mengambil cuman kata yang dicari dalam baris dengan menggunakan syntax Perl regexp. Regex `(?<=ERROR ).+(?= \()` sama seperti regex2 akan tetapi hanya kata ERROR. Kode `| sort | uniq -c` melakukan *sort* agar pesan *log ERROR* yang sama berurutan kemudian dihitung berapa setiap user mendapat pesan ERROR.
+
 
 ### **Jawaban No. 1C**
 
@@ -135,7 +127,7 @@ Pada soal 1C diminta menampilkan jumlah kemunculan log ERROR dan INFO untuk seti
 #semua msg Error sampai akhir baris setiap log
 E=$(grep -oP 'ERROR.+' syslog.log)
 ```
-Kode diatas ini mencari kata ERROR sampai akhir baris setiap log lalu disimpan dalam variable `E`.
+Kode diatas ini mencari kata ERROR sampai akhir baris setiap log lalu disimpan dalam variable `E`. Kode `$()` agar memasuki yang ditemukan dalam variable.
 ```
 echo "ERROR User"
 #Semua error user dengan jumlah error msg dari user
@@ -154,10 +146,10 @@ Kode diatas sama seperti sebelumnya hanya diubah dengan mencari log INFO.
 
 ### **Jawaban No. 1D**
 
-```
+```bash
 #masukan header
 printf "Error,Count\n" > "error_message.csv"
-#ambil error dan user dalam array
+#memasuki Error message dan angka dalam array
 temp=($(grep -oP '(?<=ERROR ).+(?= ()' syslog.log | sort | uniq -c | sort -nr))
 #angka
 re='^[0-9]+$'
@@ -194,7 +186,101 @@ done
 
 ### **Penjelasan No. 1D**
 
-Pada soal 1D
+Pada soal 1D diminta untuk memasuki informasi pada poin b ke dalam file *error_message.csv* dengan format khusus.
+```
+#masukan header
+printf "Error,Count\n" > "error_message.csv"
+```
+Kode diatas memasukan `Error,Count` sebagai header dari file csv.
+```
+#memasuki Error message dan angka dalam array
+temp=($(grep -oP '(?<=ERROR ).+(?= ()' syslog.log | sort | uniq -c | sort -nr))
+```
+Regex `(?<=ERROR ).+(?= \()` sama seperti regex2 akan tetapi hanya kata ERROR. Kode `| sort | uniq -c` melakukan *sort* agar *user* yang sama berurutan kemudian dihitung berapa setiap user mendapat pesan ERROR. Kode `| sort -nr` melakukan *sort* dari jumlah terbanyak ke jumlah terdikit. Kode `($())` menyimpan dalam bentuk array.
+```
+#angka
+re='^[0-9]+$'
+it=-1
+one=1
+```
+Variable - variable yang digunakan dalam looping nanti. `it` sebagai iterator tambahan. `re` representative dari angka. `one` satu.
+```
+for i in "${!temp[@]}"
+do
+#jika array bukan angka maka
+    if ! [[ "${temp[$i]}" =~ $re ]]
+        then
+        #tambah substring pada array ke $it
+        words[$it]+="${temp[$i]}"
+        #jika array+1 bukan angka maka
+            if ! [[ "${temp[$i+$one]}" =~ $re ]]
+                then
+                #tambah substring pada array ke $it
+                words[$it]+=" "
+            fi
+    else
+    #jika ketemu angka
+    it=$it+$one
+    numbers[$it]="${temp[$i]}"
+    fi
+done
+```
+Dilakukan for loop dengan nested if agar dapat memenuhi format output yang diinginkan.
+```
+if ! [[ "${temp[$i]}" =~ $re ]]
+        then
+        #tambah substring pada array ke $it
+        words[$it]+="${temp[$i]}"
+        if ! [[ "${temp[$i+$one]}" =~ $re ]]
+             then
+             #tambah substring pada array ke $it
+             words[$it]+=" "
+        fi
+```
+Jika `${temp[$i]}` bukan angka maka menambahkan string `${temp[$i]}` ke `words[$it]`. Kemudian dicek lagi menggunakan if, jika `${temp[$i+$one]}` yaitu satu diatas `${temp[$i]}`, bukan angka maka menambahkan string ` `.
+```
+else
+    #jika ketemu angka
+    it=$it+$one
+    numbers[$it]="${temp[$i]}"
+    fi
+```
+Jika tidak memenuhi if maka `it` sebagai iterator dijumlah dan memasuki angka pada array `numbers[$it]`. Variable `it` awal - awal -1 karena awal dari array `${temp[$i]}` merupakan angka.
+```
+#memasukan data pada csv
+for i in "${!words[@]}"
+    do
+    sentence="${words[$i]}"
+    number="${numbers[$i]}"
+    printf "%s,%d\n" "$sentence" "$number" >> "error_message.csv"
+done
+```
+Kemudian dilakukan for loop untuk memasuki kalimat dan angka ke dalam `error_message.csv` sesuai format yang diminta.
+
+### **Jawaban No. 1E**
+
+```
+printf "Username,INFO,ERROR/n" > "user_statistic.csv"
+#Pertama ambil semua user
+username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
+#Mengambil semua Error
+E=$(grep -oP 'ERROR.+' syslog.log)
+#Mengambil semua INFO
+I=$(grep -oP 'INFO.+' syslog.log)
+
+#Melakukan looping agar dengan menghitung username di dalam 
+#Error dan Info dan memasuki dalam csv
+for i in "${!username[@]}"
+do
+    usertemp="${username[$i]}"
+    In=$(grep -c $usertemp <<< "$I")
+    Er=$(grep -c $usertemp <<< "$E")
+    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"
+done
+```
+
+### **Penjelasan No. 1E**
+
 
 ### **Soal No. 2**
 
