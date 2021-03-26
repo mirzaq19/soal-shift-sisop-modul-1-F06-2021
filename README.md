@@ -113,6 +113,7 @@ E=$(grep -oP 'ERROR.+' syslog.log)
 echo "ERROR User"
 #Semua error user dengan jumlah error msg dari user
 grep -oP '(?<=()w+.?w+' <<< "$E" | sort | uniq -c
+
 #semua msg INFO sampai akhir line
 I=$(grep -oP 'INFO.+' syslog.log)
 echo "INFO User"
@@ -259,7 +260,7 @@ Kemudian dilakukan for loop untuk memasuki kalimat dan angka ke dalam `error_mes
 
 ### **Jawaban No. 1E**
 
-```
+```bash
 printf "Username,INFO,ERROR/n" > "user_statistic.csv"
 #Pertama ambil semua user
 username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
@@ -280,7 +281,28 @@ done
 ```
 
 ### **Penjelasan No. 1E**
-
+Pada soal 1E diminta untuk memasuki informasi pada poin c ke dalam file `user_statistic.csv` dengan header `**Username,INFO,ERROR**` diurutkan berdasarkan username secara *ascending*.
+```
+printf "Username,INFO,ERROR/n" > "user_statistic.csv"
+```
+Kode ini memasuki `**Username,INFO,ERROR**` ke dalam file `user_statistic.csv` sebagai header.
+```
+#Pertama ambil semua user
+username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
+```
+Kode `grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq` seperti pada no 1C mengambil semua *user* akan tetapi tidak dihitung hanya mengambil *user* yang tidak sama dan `($())` untuk dapat disimpan sebagai array.
+```
+#Melakukan looping agar dengan menghitung username di dalam 
+#Error dan Info dan memasuki dalam csv
+for i in "${!username[@]}"
+do
+    usertemp="${username[$i]}"
+    In=$(grep -c $usertemp <<< "$I")
+    Er=$(grep -c $usertemp <<< "$E")
+    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"
+done
+```
+Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `In=$(grep -c $usertemp <<< "$I")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Er=$(grep -c $usertemp <<< "$E")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"` memasuki semua data yang diperlukan pada `user_statistic.csv`.
 
 ### **Soal No. 2**
 
