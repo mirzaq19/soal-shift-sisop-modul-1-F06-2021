@@ -13,10 +13,7 @@ regex4="(ERROR|INFO).+(?= \() |(?<=\()\w+\.?\w+"
 
 #soal 1B
 #semua msg Error (Error tidak masuk) sampai bertemu ' ('
-grep -oP '(?<=ERROR ).+(?= \()' syslog.log
-#Menghitung Error msg dan dimasukkin var
-E=$(grep -c 'ERROR' syslog.log)
-echo "Jumlah ERROR: ${E}"
+grep -oP '(?<=ERROR ).+(?= \()' syslog.log | sort | uniq -c
 
 #soal 1C
 #semua msg Error sampai akhir line
