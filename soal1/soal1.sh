@@ -24,7 +24,7 @@ E=$(grep -oP 'ERROR.+' syslog.log)
 echo "ERROR User"
 #Semua error user dengan jumlah error msg dari user
 grep -oP '(?<=()w+.?w+' <<< "$E" | sort | uniq -c
-#semua msg msg sampai akhir line
+#semua msg INFO sampai akhir line
 I=$(grep -oP 'INFO.+' syslog.log)
 echo "INFO User"
 #Semua info user dengan jumlah info msg dari user
