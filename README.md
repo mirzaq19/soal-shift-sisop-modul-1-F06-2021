@@ -113,6 +113,89 @@ echo "Jumlah ERROR: ${E}"
 Kode `grep -c 'ERROR'` menghitung berapa banyak muncul kata ERROR. Kode `E=$()` agar dapat memasuki grep dalam variable yang pada kode `echo "Jumlah ERROR: ${E}"` dilakukan output.
 
 ### **Jawaban No. 1C**
+
+```bash
+#soal 1C
+#semua msg Error sampai akhir line
+E=$(grep -oP 'ERROR.+' syslog.log)
+echo "ERROR User"
+#Semua error user dengan jumlah error msg dari user
+grep -oP '(?<=()w+.?w+' <<< "$E" | sort | uniq -c
+#semua msg INFO sampai akhir line
+I=$(grep -oP 'INFO.+' syslog.log)
+echo "INFO User"
+#Semua info user dengan jumlah info msg dari user
+grep -oP '(?<=()w+.?w+' <<< "$I" | sort | uniq -c
+```
+
+### **Penjelasan No. 1C**
+
+Pada soal 1C diminta menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap *user*-nya.
+```
+#semua msg Error sampai akhir baris setiap log
+E=$(grep -oP 'ERROR.+' syslog.log)
+```
+Kode diatas ini mencari kata ERROR sampai akhir baris setiap log lalu disimpan dalam variable `E`.
+```
+echo "ERROR User"
+#Semua error user dengan jumlah error msg dari user
+grep -oP '(?<=()w+.?w+' <<< "$E" | sort | uniq -c
+```
+Kode `grep -oP (?<=()w+.?w+ <<< "$E"` mengambil semua *user* dari varible `E`. Kode `| sort | uniq -c` melakukan *sort* agar *user* yang sama berurutan kemudian dihitung berapa setiap user mendapat pesan ERROR.
+
+```
+#semua msg INFO sampai akhir line
+I=$(grep -oP 'INFO.+' syslog.log)
+echo "INFO User"
+#Semua info user dengan jumlah info msg dari user
+grep -oP '(?<=()w+.?w+' <<< "$I" | sort | uniq -c
+```
+Kode diatas sama seperti sebelumnya hanya diubah dengan mencari log INFO.
+
+### **Jawaban No. 1D**
+
+```
+#masukan header
+printf "Error,Count\n" > "error_message.csv"
+#ambil error dan user dalam array
+temp=($(grep -oP '(?<=ERROR ).+(?= ()' syslog.log | sort | uniq -c | sort -nr))
+#angka
+re='^[0-9]+$'
+it=-1
+one=1
+
+for i in "${!temp[@]}"
+do
+#jika array bukan angka maka
+    if ! [[ "${temp[$i]}" =~ $re ]]
+        then
+        #tambah substring pada array ke $it
+        words[$it]+="${temp[$i]}"
+        #jika array+1 bukan angka maka
+            if ! [[ "${temp[$i+$one]}" =~ $re ]]
+                then
+                #tambah substring pada array ke $it
+                words[$it]+=" "
+            fi
+    else
+    #jika ketemu angka
+    it=$it+$one
+    numbers[$it]="${temp[$i]}"
+    fi
+done
+#memasukan data pada csv
+for i in "${!words[@]}"
+    do
+    sentence="${words[$i]}"
+    number="${numbers[$i]}"
+    printf "%s,%d\n" "$sentence" "$number" >> "error_message.csv"
+done
+```
+
+### **Penjelasan No. 1D**
+
+Pada soal 1D
+
 ### **Soal No. 2**
 
 Steven dan Manis mendirikan sebuah *startup* bernama “TokoShiSop”. Sedangkan kamu dan Clemong adalah karyawan pertama dari TokoShiSop. Setelah tiga tahun bekerja, Clemong diangkat menjadi manajer penjualan TokoShiSop, sedangkan kamu menjadi kepala gudang yang mengatur keluar masuknya barang.
