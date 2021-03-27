@@ -962,51 +962,17 @@ Potongan kode ini akan memasukkan semua folder kucing maupun kelinci ke dalam zi
 
 ### **Jawaban No. 3e**
 
-```bash
-#!/bin/bash
+```crontab
+# Zip saat kuliah
+0 7 * * 1-5 bash ~/soal-shift-sisop-modul-1-F06-2021/soal3/soal3d.sh
 
-# Masuk ke folder repo dulu
-BASEDIR=$(dirname "$0")
-echo "Masuk ke $BASEDIR"
-cd "$BASEDIR"
-
-# Ambil tanggal hari ini
-hariini=$(date +"%d%m%Y")
-
-# Unzip file-filenya
-unzip -P "$hariini" Koleksi.zip
-
-# Hapus file zip
-rm ./Koleksi.zip
+# Unzip saat tidak kuliah
+0 18 * * 1-5 unzip -P "$(date +"%d%m%Y")" ~/soal-shift-sisop-modul-1-F06-2021/soal3/Koleksi.zip -d ~/soal-shift-sisop-modul-1-F06-2021/soal3/ && rm ~/soal-shift-sisop-modul-1-F06-2021/soal3/Koleksi.zip
 ```
 
 ### **Penjelasan No. 3e**
 
-```bash
-BASEDIR=$(dirname "$0")
-echo "Masuk ke $BASEDIR"
-cd "$BASEDIR"
-```
-
-Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* melakukan unzip file pada directory yang sama dengan *script*-nya.
-
-```bash
-hariini=$(date +"%d%m%Y")
-```
-
-Potongan kode ini mengambil informasi tanggal hari ini dengan format "DDMMYYYY" dan menyimpannya ke variabel `hariini`.
-
-```bash
-unzip -P "$hariini" Koleksi.zip
-```
-
-Potongan kode ini akan melakukan *extract* arsip "Koleksi.zip" dengan password sesuai variabel `hariini`.
-
-```bash
-rm ./Koleksi.zip
-```
-
-Potongan kode ini akan menghaous arsip "Koleksi.zip".
+*Script* cron di atas bertujuan untuk mengeksekusi *script* `soal3d.sh` **setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore** dan melakukan unzip serta hapus zip **selain waktu-waktu tersebut**.
 
 ### **Catatan tambahan untuk No. 3**
 
