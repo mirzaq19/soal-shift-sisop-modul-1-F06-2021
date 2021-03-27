@@ -108,42 +108,49 @@ Kode `grep -oP` berarti mengambil cuman kata yang dicari dalam baris dengan meng
 
 ```bash
 #soal 1C
-#semua msg Error sampai akhir line
+printf "Username,INFO,ERROR/n"
+#Pertama ambil semua user
+username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
+#Mengambil semua Error
 E=$(grep -oP 'ERROR.+' syslog.log)
-echo "ERROR User"
-#Semua error user dengan jumlah error msg dari user
-grep -oP '(?<=()w+.?w+' <<< "$E" | sort | uniq -c
-
-#semua msg INFO sampai akhir line
+#Mengambil semua INFO
 I=$(grep -oP 'INFO.+' syslog.log)
-echo "INFO User"
-#Semua info user dengan jumlah info msg dari user
-grep -oP '(?<=()w+.?w+' <<< "$I" | sort | uniq -c
+
+#Melakukan looping agar dengan menghitung username di dalam 
+#Error dan Info dan memasuki dalam csv
+for i in "${!username[@]}"
+do
+    usertemp="${username[$i]}"
+    In=$(grep -c $usertemp <<< "$I")
+    Er=$(grep -c $usertemp <<< "$E")
+    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er"
+done
 ```
 
 ### **Penjelasan No. 1C**
 
 Pada soal 1C diminta menampilkan jumlah kemunculan log ERROR dan INFO untuk setiap *user*-nya.
 ```
-#semua msg Error sampai akhir baris setiap log
-E=$(grep -oP 'ERROR.+' syslog.log)
+printf "Username,INFO,ERROR/n"
 ```
-Kode diatas ini mencari kata ERROR sampai akhir baris setiap log lalu disimpan dalam variable `E`. Kode `$()` agar memasuki yang ditemukan dalam variable.
+Melakukan output `Username,INFO,ERROR` agar mengetahui format yang ditampilkan.
 ```
-echo "ERROR User"
-#Semua error user dengan jumlah error msg dari user
-grep -oP '(?<=()w+.?w+' <<< "$E" | sort | uniq -c
+#Pertama ambil semua user
+username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
 ```
-Kode `grep -oP (?<=()w+.?w+ <<< "$E"` mengambil semua *user* dari varible `E`. Kode `| sort | uniq -c` melakukan *sort* agar *user* yang sama berurutan kemudian dihitung berapa setiap user mendapat pesan ERROR.
-
+Kode `grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq` seperti pada no 1C mengambil semua *user* akan tetapi tidak dihitung hanya mengambil *user* yang tidak sama dan `($())` untuk dapat disimpan sebagai array.
 ```
-#semua msg INFO sampai akhir line
-I=$(grep -oP 'INFO.+' syslog.log)
-echo "INFO User"
-#Semua info user dengan jumlah info msg dari user
-grep -oP '(?<=()w+.?w+' <<< "$I" | sort | uniq -c
+#Melakukan looping agar dengan menghitung username di dalam 
+#Error dan Info dan memasuki dalam csv
+for i in "${!username[@]}"
+do
+    usertemp="${username[$i]}"
+    In=$(grep -c $usertemp <<< "$I")
+    Er=$(grep -c $usertemp <<< "$E")
+    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"
+done
 ```
-Kode diatas sama seperti sebelumnya hanya diubah dengan mencari log INFO.
+Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `In=$(grep -c $usertemp <<< "$I")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Er=$(grep -c $usertemp <<< "$E")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `printf "%s,%d,%d\n" "$usertemp" "$In" "$Er"` menampilakan *user*,jumlah info,jumlah error.
 
 ### **Jawaban No. 1D**
 
