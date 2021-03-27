@@ -117,7 +117,6 @@ E=$(grep -oP 'ERROR.+' syslog.log)
 I=$(grep -oP 'INFO.+' syslog.log)
 
 #Melakukan looping agar dengan menghitung username di dalam 
-#Error dan Info dan memasuki dalam csv
 for i in "${!username[@]}"
 do
     usertemp="${username[$i]}"
