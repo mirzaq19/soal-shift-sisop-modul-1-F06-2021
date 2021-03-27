@@ -46,7 +46,7 @@ ryujin.1203,1,3
 
 - **Tidak boleh** menggunakan AWK
 
-### **Jawaban No. 1a**
+### **Jawaban No. 1A**
 
 ```bash
 #!/bin/bash
