@@ -653,6 +653,8 @@ done
 # Done
 echo "Sudah terdownload semua"
 ```
+![Soal 3a Terminal](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3a-terminal.webp)
+![Soal 3a File](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3b-file.webp)
 
 ### **Penjelasan No. 3a**
 
@@ -757,6 +759,9 @@ mv ./Foto.log "./$current_date/"
 # Sudah
 echo "Moved to $current_date"
 ```
+![Soal 3b Terminal](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3b-terminal.webp)
+![Soal 3b File](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3b-file.webp)
+![Soal 3b Crontab](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3b-crontab.webp)
 
 ### **Penjelasan No. 3b (bash)**
 
@@ -878,6 +883,10 @@ mv ./Foto.log "./$nama_folder/"
 echo "Moved to $nama_folder"
 ```
 
+![Soal 3c Terminal Kelinci](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3c-terminal-kelinci.webp)
+![Soal 3c Terminal Kucing](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3c-terminal-kucing.webp)
+![Soal 3c File](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3c-file.webp)
+
 ### **Penjelasan No. 3c**
 
 Sebetulnya *script* pada **3c** ini mirip dengan **3a**, oleh karena itu disini akan dijelaskan perubahannya saja.
@@ -937,6 +946,9 @@ hariini=$(date +"%d%m%Y")
 zip -rem Koleksi.zip Kucing_* Kelinci_* -P "$hariini"
 ```
 
+![Soal 3d Terminal](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3d-terminal.webp)
+![Soal 3d File](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3d-file.webp)
+
 ### **Penjelasan No. 3d**
 
 ```bash
@@ -972,6 +984,11 @@ Potongan kode ini akan memasukkan semua folder kucing maupun kelinci ke dalam zi
 ### **Penjelasan No. 3e**
 
 *Script* cron di atas bertujuan untuk mengeksekusi *script* `soal3d.sh` **setiap hari kecuali sabtu dan minggu, dari jam 7 pagi sampai 6 sore** dan melakukan unzip serta hapus zip **selain waktu-waktu tersebut**.
+
+![Soal 3e Crontab compress](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3e-crontab.webp)
+![Soal 3e Crontab](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3e-crontab-compress.webp)
+![Soal 3e terminal](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3e-terminal.webp)
+![Soal 3e File](https://storage.googleapis.com/zydhan-web.appspot.com/soal-3e-file.webp)
 
 ### **Catatan tambahan untuk No. 3**
 
