@@ -940,7 +940,7 @@ echo "Masuk ke $BASEDIR"
 cd "$BASEDIR"
 
 # Ambil tanggal hari ini
-hariini=$(date +"%d%m%Y")
+hariini=$(date +"%m%d%Y")
 
 # Zip file-filenya
 zip -rem Koleksi.zip Kucing_* Kelinci_* -P "$hariini"
@@ -960,7 +960,7 @@ cd "$BASEDIR"
 Kode ini berfungsi untuk mencari path dari file *script* ini lalu berpindah ke directory itu. Hal ini bertujuan agar *script* melakukan zip file pada directory yang sama dengan *script*-nya.
 
 ```bash
-hariini=$(date +"%d%m%Y")
+hariini=$(date +"%m%d%Y")
 ```
 
 Potongan kode ini mengambil informasi tanggal hari ini dengan format "DDMMYYYY" dan menyimpannya ke variabel `hariini`.
@@ -971,6 +971,9 @@ zip -rem Koleksi.zip Kucing_* Kelinci_* -P "$hariini"
 
 Potongan kode ini akan memasukkan semua folder kucing maupun kelinci ke dalam zip dengan nama "Koleksi.zip" dengan password sesuai variabel `hariini` lalu menghapus folder-folder *original*-nya.
 
+### **Revisi No. 3d**
+Terbalik antara "%m%d%Y" dan "%d%m%Y", solusinya tinggal membaliknya.
+
 ### **Jawaban No. 3e**
 
 ```crontab
@@ -978,8 +981,11 @@ Potongan kode ini akan memasukkan semua folder kucing maupun kelinci ke dalam zi
 0 7 * * 1-5 bash ~/soal-shift-sisop-modul-1-F06-2021/soal3/soal3d.sh
 
 # Unzip saat tidak kuliah
-0 18 * * 1-5 unzip -P "$(date +"%d%m%Y")" ~/soal-shift-sisop-modul-1-F06-2021/soal3/Koleksi.zip -d ~/soal-shift-sisop-modul-1-F06-2021/soal3/ && rm ~/soal-shift-sisop-modul-1-F06-2021/soal3/Koleksi.zip
+0 18 * * 1-5 unzip -P "$(date +"%m%d%Y")" ~/soal-shift-sisop-modul-1-F06-2021/soal3/Koleksi.zip -d ~/soal-shift-sisop-modul-1-F06-2021/soal3/ && rm ~/soal-shift-sisop-modul-1-F06-2021/soal3/Koleksi.zip
 ```
+
+### **Revisi No. 3e**
+Terbalik antara "%m%d%Y" dan "%d%m%Y", solusinya tinggal membaliknya.
 
 ### **Penjelasan No. 3e**
 
