@@ -65,7 +65,7 @@ done
 #soal 1E
 #Pertama ambil semua user
 printf "Username,INFO,ERROR\n" > "user_statistic.csv"
-uusername=($(grep -oP '\(\w+.?\w+\)' syslog.log | sort | uniq))
+username=($(grep -oP '\(\w+.?\w+\)' syslog.log | sort | uniq))
 
 E=$(grep -oP 'ERROR.+' syslog.log)
 Er=$(grep -oP '\(\w+.?\w+\)' <<< "$E" | sort)
