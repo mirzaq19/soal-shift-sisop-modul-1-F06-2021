@@ -103,6 +103,9 @@ grep -oP '(?<=ERROR ).+(?= \()' syslog.log | sort | uniq -c
 ```
 Kode `grep -oP` berarti mengambil cuman kata yang dicari dalam baris dengan menggunakan syntax Perl regexp. Regex `(?<=ERROR ).+(?= \()` sama seperti regex2 akan tetapi hanya kata ERROR. Kode `| sort | uniq -c` melakukan *sort* agar pesan *log ERROR* yang sama berurutan kemudian dihitung berapa setiap user mendapat pesan ERROR.
 
+### **Output No. 1B**
+
+![1b](https://user-images.githubusercontent.com/63639703/113424461-6628f780-93fa-11eb-95a0-8d694e3e3828.png)
 
 ### **Jawaban No. 1C**
 
@@ -149,6 +152,10 @@ printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern"
 done
 ```
 Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `In=$(grep -c $usertemp <<< "$In")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Er=$(grep -c $usertemp <<< "$Er")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")` untuk hanya mengambil user tanpa ada tanda kurung. Kode `printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern"` menampilakan *user*,jumlah info,jumlah error.
+
+### **Output No. 1C**
+
+![1c](https://user-images.githubusercontent.com/63639703/113424666-bb650900-93fa-11eb-9d2a-34f046ca27ff.png)
 
 ### **Jawaban No. 1D**
 
@@ -263,6 +270,10 @@ done
 ```
 Kemudian dilakukan for loop untuk memasuki kalimat dan angka ke dalam `error_message.csv` sesuai format yang diminta.
 
+### **Output No. 1D**
+
+![1d](https://user-images.githubusercontent.com/63639703/113424826-01ba6800-93fb-11eb-9145-520ef443de5d.png)
+
 ### **Jawaban No. 1E**
 
 ```bash
@@ -309,6 +320,10 @@ printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern">> "user_statistic.csv"
 done
 ```
 Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `Inn=$(grep -c $usertemp <<< "$In")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Ern=$(grep -c $usertemp <<< "$Er")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")` untuk hanya mengambil user tanpa ada tanda kurung. Kode `printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern" >> "user_statistic.csv"` memasuki semua data yang diperlukan pada `user_statistic.csv`.
+
+### **Output No. 1E**
+
+![1e](https://user-images.githubusercontent.com/63639703/113424952-2f9fac80-93fb-11eb-9dd9-87c59af860d0.png)
 
 ### **Soal No. 2**
 
