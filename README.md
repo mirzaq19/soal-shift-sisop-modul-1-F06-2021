@@ -108,21 +108,21 @@ Kode `grep -oP` berarti mengambil cuman kata yang dicari dalam baris dengan meng
 
 ```bash
 #soal 1C
-printf "Username,INFO,ERROR/n"
-#Pertama ambil semua user
-username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
-#Mengambil semua Error
-E=$(grep -oP 'ERROR.+' syslog.log)
-#Mengambil semua INFO
-I=$(grep -oP 'INFO.+' syslog.log)
+printf "Username,INFO,ERROR\n" 
+username=($(grep -oP '\(\w+.?\w+\)' syslog.log | sort | uniq))
 
-#Melakukan looping agar dengan menghitung username di dalam 
+E=$(grep -oP 'ERROR.+' syslog.log)
+Er=$(grep -oP '\(\w+.?\w+\)' <<< "$E" | sort)
+I=$(grep -oP 'INFO.+' syslog.log)
+In=$(grep -oP '\(\w+.?\w+\)' <<< "$I" | sort)
+
 for i in "${!username[@]}"
 do
-    usertemp="${username[$i]}"
-    In=$(grep -c $usertemp <<< "$I")
-    Er=$(grep -c $usertemp <<< "$E")
-    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er"
+usertemp="${username[$i]}"
+Inn=$(grep -c $usertemp <<< "$In")
+Ern=$(grep -c $usertemp <<< "$Er")
+userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")
+printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern"
 done
 ```
 
@@ -135,21 +135,20 @@ printf "Username,INFO,ERROR/n"
 Melakukan output `Username,INFO,ERROR` agar mengetahui format yang ditampilkan.
 ```
 #Pertama ambil semua user
-username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
+username=($(grep -oP '\(\w+.?\w+\)' syslog.log | sort | uniq))
 ```
-Kode `grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq` seperti pada no 1C mengambil semua *user* akan tetapi tidak dihitung hanya mengambil *user* yang tidak sama dan `($())` untuk dapat disimpan sebagai array.
+Kode `grep -oP '\(\w+.?\w+\)' syslog.log | sort | uniq` seperti pada no 1C mengambil semua *user* dan `($())` untuk dapat disimpan sebagai array.
 ```
-#Melakukan looping agar dengan menghitung username di dalam 
-#Error dan Info dan memasuki dalam csv
 for i in "${!username[@]}"
 do
-    usertemp="${username[$i]}"
-    In=$(grep -c $usertemp <<< "$I")
-    Er=$(grep -c $usertemp <<< "$E")
-    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"
+usertemp="${username[$i]}"
+Inn=$(grep -c $usertemp <<< "$In")
+Ern=$(grep -c $usertemp <<< "$Er")
+userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")
+printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern"
 done
 ```
-Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `In=$(grep -c $usertemp <<< "$I")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Er=$(grep -c $usertemp <<< "$E")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `printf "%s,%d,%d\n" "$usertemp" "$In" "$Er"` menampilakan *user*,jumlah info,jumlah error.
+Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `In=$(grep -c $usertemp <<< "$In")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Er=$(grep -c $usertemp <<< "$Er")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")` untuk hanya mengambil user tanpa ada tanda kurung. Kode `printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern"` menampilakan *user*,jumlah info,jumlah error.
 
 ### **Jawaban No. 1D**
 
@@ -267,22 +266,22 @@ Kemudian dilakukan for loop untuk memasuki kalimat dan angka ke dalam `error_mes
 ### **Jawaban No. 1E**
 
 ```bash
-printf "Username,INFO,ERROR/n" > "user_statistic.csv"
 #Pertama ambil semua user
-username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
-#Mengambil semua Error
-E=$(grep -oP 'ERROR.+' syslog.log)
-#Mengambil semua INFO
-I=$(grep -oP 'INFO.+' syslog.log)
+printf "Username,INFO,ERROR\n" > "user_statistic.csv"
+username=($(grep -oP '\(\w+.?\w+\)' syslog.log | sort | uniq))
 
-#Melakukan looping agar dengan menghitung username di dalam 
-#Error dan Info dan memasuki dalam csv
+E=$(grep -oP 'ERROR.+' syslog.log)
+Er=$(grep -oP '\(\w+.?\w+\)' <<< "$E" | sort)
+I=$(grep -oP 'INFO.+' syslog.log)
+In=$(grep -oP '\(\w+.?\w+\)' <<< "$I" | sort)
+
 for i in "${!username[@]}"
 do
-    usertemp="${username[$i]}"
-    In=$(grep -c $usertemp <<< "$I")
-    Er=$(grep -c $usertemp <<< "$E")
-    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"
+usertemp="${username[$i]}"
+Inn=$(grep -c $usertemp <<< "$In")
+Ern=$(grep -c $usertemp <<< "$Er")
+userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")
+printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern">> "user_statistic.csv"
 done
 ```
 
@@ -294,21 +293,22 @@ printf "Username,INFO,ERROR/n" > "user_statistic.csv"
 Kode ini memasuki `**Username,INFO,ERROR**` ke dalam file `user_statistic.csv` sebagai header.
 ```
 #Pertama ambil semua user
-username=($(grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq))
+username=($(grep -oP '\(\w+.?\w+\)' syslog.log | sort | uniq))
 ```
-Kode `grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq` seperti pada no 1C mengambil semua *user* akan tetapi tidak dihitung hanya mengambil *user* yang tidak sama dan `($())` untuk dapat disimpan sebagai array.
+Kode `grep -oP '(?<=()w+.?w+' syslog.log | sort | uniq` seperti pada no 1C mengambil semua *user* dan `($())` untuk dapat disimpan sebagai array.
 ```
 #Melakukan looping agar dengan menghitung username di dalam 
 #Error dan Info dan memasuki dalam csv
 for i in "${!username[@]}"
 do
-    usertemp="${username[$i]}"
-    In=$(grep -c $usertemp <<< "$I")
-    Er=$(grep -c $usertemp <<< "$E")
-    printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"
+usertemp="${username[$i]}"
+Inn=$(grep -c $usertemp <<< "$In")
+Ern=$(grep -c $usertemp <<< "$Er")
+userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")
+printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern">> "user_statistic.csv"
 done
 ```
-Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `In=$(grep -c $usertemp <<< "$I")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Er=$(grep -c $usertemp <<< "$E")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `printf "%s,%d,%d\n" "$usertemp" "$In" "$Er" >> "user_statistic.csv"` memasuki semua data yang diperlukan pada `user_statistic.csv`.
+Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` array ke index `i` disimpan ke variable baru. Kode `Inn=$(grep -c $usertemp <<< "$In")` menghitung berapa dari log INFO yang ada user tersebut. Kode `Ern=$(grep -c $usertemp <<< "$Er")` menghitung berapa dari log ERROR yang ada user tersebut. Kode `userfinal=$(grep -oP '(?<=\()\w+.?\w+' <<< "$usertemp")` untuk hanya mengambil user tanpa ada tanda kurung. Kode `printf "%s,%d,%d\n" "$userfinal" "$Inn" "$Ern" >> "user_statistic.csv"` memasuki semua data yang diperlukan pada `user_statistic.csv`.
 
 ### **Soal No. 2**
 
