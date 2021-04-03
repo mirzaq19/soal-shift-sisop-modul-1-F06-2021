@@ -369,17 +369,18 @@ Wilayah bagian (region) yang memiliki total keuntungan (profit) yang paling sedi
 - Script pada poin (e) memiliki nama file ‘soal2_generate_laporan_ihir_shisop.sh’
 
 ### **Jawaban No. 2**
+![sisop1](https://user-images.githubusercontent.com/40484843/113472743-66bf9d80-948f-11eb-8102-f766e830903d.PNG)
 
-Untuk menyelesaikan masalah yang ada pada nomer 2 di atas akan menggunakan program `AWK`. Langkah pertamanya adalah menentukan file separator (pemisah antar data) yang digunakan pada file yang berisi data yang akan diproses menggunakan awk.
+Untuk menyelesaikan masalah yang ada pada nomer 2 di atas akan menggunakan program `AWK`. Pada nomor 2 ini diminta untuk membuat rangkuman informasi yang dibutuhkan dari file `Laporan-TokoShiSop.tsv`. Langkah pertamanya adalah menentukan file separator (pemisah antar data) yang digunakan pada file yang berisi data yang akan diproses menggunakan awk.
 
 ```bash
 BEGIN { FS = "\t" ;}
 ```
-Kode di atas digunakan untuk mendefinisikan file separator, dengan memasukkan file separator yang digunakan ke dalam variabel `FS`.
+Kode di atas digunakan untuk mendefinisikan file separator, dengan memasukkan file separator yang digunakan ke dalam variabel `FS`. Pada kasus ini karena format file nya adalah `.tsv` maka file separator yang digunakan adalah `tab`.
 
-### **Penjelasan Soal No. 2a**
+### **Penjelasan Soal No. 2a - (Row ID dan Profit Percetage Terbesar)**
 
-Pada nomor 2a diminta untuk mencari dan menampilkan `ID Transaksi` dan `Profit Percentage terbesar` dalam data yang ada di file laporan. 
+Pada nomor 2a diminta untuk mencari dan menampilkan `ID Transaksi` dan `Profit Percentage terbesar` dalam data yang ada di file laporan. Rumus dari profit percetage adalah `Profit percentage = (Profit/Cost Price)*100%`
 
 ```bash
 #Nomer 2a 
@@ -405,9 +406,18 @@ Kode di atas digunakan untuk mencari `Profit Percentage` tiap baris nya dan meny
 printf("Transaksi terakhir dengan profit percentage terbesar yaitu %s dengan persentase %.2f%%\n\n",maxid,maxpp);
 ```
 
-### **Penjelasan Soal No. 2b**
+### **Revisi 2a**
 
-Pada soal nomor 2b diminta untuk mencari dan menampilkan daftar `Customer` yang melakukan transaksi di `Albuquerque`.
+Terdapat sedikit revisi untuk solusi soal 2a, yaitu yang ditampilkan adalah Row ID bukan Order ID, maka kode untuk menampilkan nya berubah menjadi seperti ini :
+
+```bash
+#Soal 2a
+printf("Transaksi terakhir dengan profit percentage terbesar yaitu %s dengan persentase %.2f%%\n\n",maxrow,maxpp);
+```
+
+### **Penjelasan Soal No. 2b - (Nama Customer tahun 2017 di Albuquerque)**
+
+Pada soal nomor 2b diminta untuk mencari daftar `Customer` yang melakukan transaksi pada tahun 2017 di `Albuquerque`.
 
 ```bash
 #Nomer 2b
@@ -421,7 +431,7 @@ Pada soal nomor 2b diminta untuk mencari dan menampilkan daftar `Customer` yang 
   }
 }
 ```
-Untuk mencarinya bisa dimulai dengan mengecek tahun order nya apakah sama dengan `2017` kebetulan di `Order ID` nya terdapat tahun ordernya jadi memudahkan untuk mengecek waktu transaksinya, kemudian mengecek apakah tempat transaksi tersebut berada di `Albuquerque` pada variable `$10`. Jika ditemukan maka akan masuk ke pengecekan apakah nama customer nya sudah masuk dalam daftar. Jika nama `Customer` belum masuk maka akan dimasukkan ke dalam array yang menampung daftar namanya. Lalu untuk menampilkannya dengan menggunakan kode dibawah ini.
+Untuk mencarinya bisa dimulai dengan mengecek tahun order nya apakah sama dengan `2017` kebetulan di `Order ID` nya terdapat tahun ordernya jadi memudahkan untuk mengecek waktu transaksinya, kemudian mengecek apakah tempat transaksi tersebut berada di `Albuquerque` pada variable `$10`. Jika ditemukan maka akan masuk ke pengecekan apakah nama customer nya sudah masuk dalam daftar. Jika nama `Customer` belum masuk maka akan dimasukkan ke dalam array yang menampung daftar namanya, jika nama sudah ada maka akan lanjut pada barus data berikutnya. Lalu untuk menampilkannya dengan menggunakan kode dibawah ini.
 
 ```bash
 #Soal 2b
@@ -430,7 +440,7 @@ for(itr = 0 ; itr < jml2017; itr++) printf("%s\n",custname[itr]);
 printf("\n");
 ```
 
-### **Penjelasan Soal No. 2c**
+### **Penjelasan Soal No. 2c - (Segment dan Jumlah Transaksi paling sedikit)**
 
 Pada soal nomor 2c diminta untuk mencari dan menampilkan `Segment Customer` dengan jumlah transaksi paling sedikit.
 
@@ -441,7 +451,7 @@ Pada soal nomor 2c diminta untuk mencari dan menampilkan `Segment Customer` deng
 /Consumer/ { consu++ }
 ```
 
-Kode di atas digunakan untuk menghitung data yang termasuk pada salah satu dari ketiga segment customer yang ada, yaitu `Home Office`, `Corporate`, dan `Costumer`. Lalu untuk menampilkannya dengan menggunakan kode berikut ini.
+Kode di atas digunakan untuk menghitung data yang termasuk pada salah satu dari ketiga segment customer yang ada, yaitu `Home Office`, `Corporate`, dan `Costumer`, ketika pada baris data ditemukan salah satu dari ketiga segment diatas maka akan menambah jumlah data transaksi pada variabel masing-masing. Lalu untuk menampilkannya dengan menggunakan kode berikut ini.
 
 ```bash
 #Soal 2c
@@ -458,7 +468,7 @@ printf("Tipe segmen customer yang penjualannya paling sedikit adalah %s dengan %
 
 Sebelum ditampilkan akan masuk dalam percabangan untuk menentukan segment customer yang memiliki jumlah transaksi paling sedikit.
 
-### **Penjelasan Soal No. 2d**
+### **Penjelasan Soal No. 2d - (Region dan Profit Paling Sedikit)**
 
 Pada soal nomor 2d diminta untuk mencari dan menampilkan `Region` (Wilayah) dengan total `Profit` (Keuntungan) paling sedikit.
 
@@ -500,9 +510,9 @@ printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang p
 Sebelum ditampilkan akan masuk dalam percabangan untuk menentukan Region mana yang memiliki Profit paling sedikit.
 
 
-### **Penjelasan Soal No. 2e**
+### **Penjelasan Soal No. 2e - (Script untuk generate hasil.txt)**
 
-Soal nomor 2e merupakan script yang akan di jalankan untuk menyelesaikan problem yang ada pada soal 2a-2d dengan menggunakan kode berikut. 
+Soal nomor 2e merupakan script yang akan di jalankan untuk menyelesaikan problem yang ada pada soal 2a-2d dengan menghasilkan file baru `hasil.txt` yang berisi rangkuman informasi yang dibutuhkan dengan menggunakan kode berikut. 
 
 ```bash
 #!/bin/bash
@@ -590,6 +600,7 @@ Kode di atas akan dijalankan dengan menggunakan perintah bash pada terminal dan 
 ```bash
 bash soal2_generate_laporan_ihir_shisop.sh
 ```
+![sisop2](https://user-images.githubusercontent.com/40484843/113473310-1f3b1080-9493-11eb-9f6d-114a2c3b5400.PNG)
 
 ### **Soal No. 3**
 
