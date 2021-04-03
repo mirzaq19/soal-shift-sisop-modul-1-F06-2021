@@ -415,6 +415,9 @@ Terdapat sedikit revisi untuk solusi soal 2a, yaitu yang ditampilkan adalah Row 
 printf("Transaksi terakhir dengan profit percentage terbesar yaitu %s dengan persentase %.2f%%\n\n",maxrow,maxpp);
 ```
 
+### **Kendala Soal 2a**
+Kendala saat mengerjakan soal 2a adalah bingung menentukan yang ditampilkan apakah itu Row ID atau order ID, karena pada soal tertulis Row ID tapi pada contoh output tertulis ID Transaksi 
+
 ### **Penjelasan Soal No. 2b - (Nama Customer tahun 2017 di Albuquerque)**
 
 Pada soal nomor 2b diminta untuk mencari daftar `Customer` yang melakukan transaksi pada tahun 2017 di `Albuquerque`.
@@ -439,6 +442,9 @@ printf("Daftar nama customer di Albuquerque pada tahun 2017 antara lain: \n");
 for(itr = 0 ; itr < jml2017; itr++) printf("%s\n",custname[itr]);
 printf("\n");
 ```
+
+### **Kendala Soal 2b**
+Kendala untuk soal 2b yaitu, sempat bingung agar nama customer tidak masuk lebih dari satu ke dalam array
 
 ### **Penjelasan Soal No. 2c - (Segment dan Jumlah Transaksi paling sedikit)**
 
@@ -467,6 +473,9 @@ printf("Tipe segmen customer yang penjualannya paling sedikit adalah %s dengan %
 ```
 
 Sebelum ditampilkan akan masuk dalam percabangan untuk menentukan segment customer yang memiliki jumlah transaksi paling sedikit.
+
+### **Kendala Soal 2c**
+Tidak ada kendala untuk soal nomor 2c 
 
 ### **Penjelasan Soal No. 2d - (Region dan Profit Paling Sedikit)**
 
@@ -509,6 +518,8 @@ printf("\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang p
 
 Sebelum ditampilkan akan masuk dalam percabangan untuk menentukan Region mana yang memiliki Profit paling sedikit.
 
+### **Kendala Soal 2d**
+Tidak ada kendala untuk soal nomor 2d 
 
 ### **Penjelasan Soal No. 2e - (Script untuk generate hasil.txt)**
 
