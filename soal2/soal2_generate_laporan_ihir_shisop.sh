@@ -3,7 +3,7 @@
 # Soal 2
 awk 'BEGIN { FS = "\t" ;}
 #Nomer 2a 
-{ temppp = ($21/($18-$21))*100;
+{ if(NR!=1){temppp = ($21/($18-$21))*100;
   if(maxpp<temppp) {
     maxpp = temppp;
     maxid = $2;
@@ -14,7 +14,7 @@ awk 'BEGIN { FS = "\t" ;}
       maxrow = $1;
       maxid = $2;
     }
-  }
+  }}
 }
 #Nomer 2b
 /2017/ {
@@ -40,7 +40,7 @@ awk 'BEGIN { FS = "\t" ;}
 
 END { 
 #Soal 2a
-   printf("Transaksi terakhir dengan profit percentage terbesar yaitu %s dengan persentase %.2f%%\n\n",maxid,maxpp);
+   printf("Transaksi terakhir dengan profit percentage terbesar yaitu %s dengan persentase %.2f%%\n\n",maxrow,maxpp);
 
 #Soal 2b
    printf("Daftar nama customer di Albuquerque pada tahun 2017 antara lain: \n");
