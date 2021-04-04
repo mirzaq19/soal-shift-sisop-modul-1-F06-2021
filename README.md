@@ -87,6 +87,10 @@ regex4="(ERROR|INFO).+(?= \() |(?<=\()\w+\.?\w+)"
 ```
 Setelah itu dijadikan satu, karena kata `(ERROR|INFO)` masuk maka tidak diperlukan `(?<=ERROR |INFO )`.
 
+### **Revisi No. 1A**
+
+Tidak ada
+
 ### **Jawaban No. 1B**
 
 ```bash
@@ -106,6 +110,10 @@ Kode `grep -oP` berarti mengambil cuman kata yang dicari dalam baris dengan meng
 ### **Output No. 1B**
 
 ![1b](https://user-images.githubusercontent.com/63639703/113424461-6628f780-93fa-11eb-95a0-8d694e3e3828.png)
+
+### **Revisi No. 1B**
+
+Tidak ada
 
 ### **Jawaban No. 1C**
 
@@ -156,6 +164,10 @@ Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` a
 ### **Output No. 1C**
 
 ![1c](https://user-images.githubusercontent.com/63639703/113424666-bb650900-93fa-11eb-9d2a-34f046ca27ff.png)
+
+### **Revisi No. 1C**
+
+Pada saat di jalankan terjadi error, kekurangan tanda kurung pada beberapa line kemudian pada saat ditambah tanda kurung tersebut outputnya masih salah karena contoh user ac outputnya 4 info 8 error, padahal aslinya hanya 2 info dan 2 error. Ternyata karena regex yang digunakan untuk mengambil user itu salah diperlukan tanda kurung pada usernya agar contoh seperti user ac pada saat mencari user ac, kelebihan karena ada user lain yang memiliki kata ac, oleh karena itu diperlukan tanda kurung. Kemudian di rubah regex agar dapat mengambil tanda kurung.
 
 ### **Jawaban No. 1D**
 
@@ -324,6 +336,10 @@ Dilakukan for loop dengan `i` sebagai index. Kode `usertemp="${username[$i]}"` a
 ### **Output No. 1E**
 
 ![1e](https://user-images.githubusercontent.com/63639703/113424952-2f9fac80-93fb-11eb-9dd9-87c59af860d0.png)
+
+### **Revisi No. 1E**
+
+Sama seperti 1C.
 
 ### **Soal No. 2**
 
