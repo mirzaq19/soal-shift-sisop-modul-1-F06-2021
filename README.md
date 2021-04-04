@@ -400,7 +400,7 @@ Pada nomor 2a diminta untuk mencari dan menampilkan `ID Transaksi` dan `Profit P
 
 ```bash
 #Nomer 2a 
-{ temppp = ($21/($18-$21))*100;
+{ if(NR!=1){temppp = ($21/($18-$21))*100;
   if(maxpp<temppp) {
     maxpp = temppp;
     maxid = $2;
@@ -411,7 +411,7 @@ Pada nomor 2a diminta untuk mencari dan menampilkan `ID Transaksi` dan `Profit P
       maxrow = $1;
       maxid = $2;
     }
-  }
+  }}
 }
 ```
 
